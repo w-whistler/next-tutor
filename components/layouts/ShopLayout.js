@@ -1,4 +1,5 @@
 import { Box } from "@material-ui/core";
+import Head from "next/head";
 import TopBar from "./TopBar";
 
 export default function ShopLayout({
@@ -6,6 +7,10 @@ export default function ShopLayout({
 }) {
   return (
     <>
+      <Head>
+        <title>Shop</title>
+        <link rel="icon" href="/static/favicon.ico" />
+      </Head>
       <TopBar />
       <Box p={2}>
         <Box className="flex gap-2 h-[60vh]">

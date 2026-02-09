@@ -1,6 +1,6 @@
+import Link from "next/link";
 import { AppBar, Badge, Box, Button, Toolbar, Typography } from "@material-ui/core";
 import { ShoppingCartOutlined } from "@material-ui/icons";
-import Link from "next/link";
 
 export default function TopBar() {
   return (
@@ -26,7 +26,7 @@ export default function TopBar() {
           <Button variant="text">Intro</Button>
         </Link>
         <Box ml={2} />
-        <Badge badgeContent={3} color="secondary">
+        <Badge badgeContent={3} color="secondary" overlap="rectangular">
           <ShoppingCartOutlined />
         </Badge>
       </Toolbar>

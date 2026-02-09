@@ -508,13 +508,13 @@ var prop_types_1 = __importDefault(__webpack_require__(/*! prop-types */ "prop-t
 
 var react_1 = __importStar(__webpack_require__(/*! react */ "react"));
 
-var utils_1 = __webpack_require__(/*! next-server/dist/server/utils */ "./node_modules/next/node_modules/next-server/dist/server/utils.js");
+var utils_1 = __webpack_require__(/*! next-server/dist/server/utils */ "next-server/dist/server/utils");
 
 var htmlescape_1 = __webpack_require__(/*! ../server/htmlescape */ "./node_modules/next/dist/server/htmlescape.js");
 
 var server_1 = __importDefault(__webpack_require__(/*! styled-jsx/server */ "./node_modules/styled-jsx/server.js"));
 
-var constants_1 = __webpack_require__(/*! next-server/constants */ "./node_modules/next/node_modules/next-server/constants.js");
+var constants_1 = __webpack_require__(/*! next-server/constants */ "next-server/constants");
 
 function getAmpPath(ampPath, asPath) {
   return ampPath ? ampPath : "".concat(asPath).concat(asPath.includes('?') ? '&' : '?', "amp=1");
@@ -1054,103 +1054,6 @@ function htmlEscapeJsonString(str) {
     return str.replace(ESCAPE_REGEX, (match) => ESCAPE_LOOKUP[match]);
 }
 exports.htmlEscapeJsonString = htmlEscapeJsonString;
-
-
-/***/ }),
-
-/***/ "./node_modules/next/node_modules/next-server/constants.js":
-/*!*****************************************************************!*\
-  !*** ./node_modules/next/node_modules/next-server/constants.js ***!
-  \*****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(/*! ./dist/lib/constants */ "./node_modules/next/node_modules/next-server/dist/lib/constants.js")
-
-
-/***/ }),
-
-/***/ "./node_modules/next/node_modules/next-server/dist/lib/constants.js":
-/*!**************************************************************************!*\
-  !*** ./node_modules/next/node_modules/next-server/dist/lib/constants.js ***!
-  \**************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.PHASE_EXPORT = 'phase-export';
-exports.PHASE_PRODUCTION_BUILD = 'phase-production-build';
-exports.PHASE_PRODUCTION_SERVER = 'phase-production-server';
-exports.PHASE_DEVELOPMENT_SERVER = 'phase-development-server';
-exports.PAGES_MANIFEST = 'pages-manifest.json';
-exports.BUILD_MANIFEST = 'build-manifest.json';
-exports.REACT_LOADABLE_MANIFEST = 'react-loadable-manifest.json';
-exports.CHUNK_GRAPH_MANIFEST = 'compilation-modules.json';
-exports.SERVER_DIRECTORY = 'server';
-exports.CONFIG_FILE = 'next.config.js';
-exports.BUILD_ID_FILE = 'BUILD_ID';
-exports.BLOCKED_PAGES = ['/_document', '/_app'];
-exports.CLIENT_STATIC_FILES_PATH = 'static';
-exports.CLIENT_STATIC_FILES_RUNTIME = 'runtime';
-exports.CLIENT_STATIC_FILES_RUNTIME_PATH = "".concat(exports.CLIENT_STATIC_FILES_PATH, "/").concat(exports.CLIENT_STATIC_FILES_RUNTIME);
-// static/runtime/main.js
-exports.CLIENT_STATIC_FILES_RUNTIME_MAIN = "".concat(exports.CLIENT_STATIC_FILES_RUNTIME_PATH, "/main.js");
-// static/runtime/amp.js
-exports.CLIENT_STATIC_FILES_RUNTIME_AMP = "".concat(exports.CLIENT_STATIC_FILES_RUNTIME_PATH, "/amp.js");
-// static/runtime/webpack.js
-exports.CLIENT_STATIC_FILES_RUNTIME_WEBPACK = "".concat(exports.CLIENT_STATIC_FILES_RUNTIME_PATH, "/webpack.js");
-// matches static/<buildid>/pages/<page>.js
-exports.IS_BUNDLED_PAGE_REGEX = /^static[/\\][^/\\]+[/\\]pages.*\.js$/;
-// matches static/<buildid>/pages/:page*.js
-exports.ROUTE_NAME_REGEX = /^static[/\\][^/\\]+[/\\]pages[/\\](.*)\.js$/;
-exports.HEAD_BUILD_ID_FILE = "".concat(exports.CLIENT_STATIC_FILES_PATH, "/HEAD_BUILD_ID");
-
-/***/ }),
-
-/***/ "./node_modules/next/node_modules/next-server/dist/server/utils.js":
-/*!*************************************************************************!*\
-  !*** ./node_modules/next/node_modules/next-server/dist/server/utils.js ***!
-  \*************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-const constants_1 = __webpack_require__(/*! next-server/constants */ "./node_modules/next/node_modules/next-server/constants.js");
-const internalPrefixes = [
-    /^\/_next\//,
-    /^\/static\//,
-];
-function isInternalUrl(url) {
-    for (const prefix of internalPrefixes) {
-        if (prefix.test(url)) {
-            return true;
-        }
-    }
-    return false;
-}
-exports.isInternalUrl = isInternalUrl;
-function isBlockedPage(pathname) {
-    return (constants_1.BLOCKED_PAGES.indexOf(pathname) !== -1);
-}
-exports.isBlockedPage = isBlockedPage;
-function cleanAmpPath(pathname) {
-    if (pathname.match(/\?amp=(y|yes|true|1)/)) {
-        pathname = pathname.replace(/\?amp=(y|yes|true|1)/, '?');
-    }
-    if (pathname.match(/&amp=(y|yes|true|1)/)) {
-        pathname = pathname.replace(/\?amp=(y|yes|true|1)/, '');
-    }
-    pathname = pathname.replace(/\?$/, '');
-    return pathname;
-}
-exports.cleanAmpPath = cleanAmpPath;
 
 
 /***/ }),
@@ -2094,6 +1997,28 @@ module.exports = require("core-js/library/fn/symbol");
 /***/ (function(module, exports) {
 
 module.exports = require("core-js/library/fn/symbol/iterator");
+
+/***/ }),
+
+/***/ "next-server/constants":
+/*!****************************************!*\
+  !*** external "next-server/constants" ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("next-server/constants");
+
+/***/ }),
+
+/***/ "next-server/dist/server/utils":
+/*!************************************************!*\
+  !*** external "next-server/dist/server/utils" ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("next-server/dist/server/utils");
 
 /***/ }),
 

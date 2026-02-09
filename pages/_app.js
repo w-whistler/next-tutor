@@ -1,5 +1,6 @@
 import ShopLayout from "../components/layouts/ShopLayout";
 import { CartProvider } from "../context/CartContext";
+import { CssBaseline } from "@material-ui/core";
 
 export default function MyApp({
   Component,
@@ -13,6 +14,7 @@ export default function MyApp({
   if (isShopPage) {
     return (
       <CartProvider>
+        <CssBaseline />
         <ShopLayout>{page}</ShopLayout>
       </CartProvider>
     );

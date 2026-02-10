@@ -80,9 +80,11 @@ export const categories = [
 ];
 
 export const adsSlides = [
-  { id: 1, title: "Summer Sale", subtitle: "Up to 50% off" },
-  { id: 2, title: "New Arrivals", subtitle: "Check out the latest" },
-  { id: 3, title: "Free Shipping", subtitle: "On orders over $50" },
+  { id: 1, title: "Summer Sale", subtitle: "Up to 50% off", image: "https://picsum.photos/seed/sale1/800/300" },
+  { id: 2, title: "New Arrivals", subtitle: "Check out the latest", image: "https://picsum.photos/seed/new2/800/300" },
+  { id: 3, title: "Free Shipping", subtitle: "On orders over $50", image: "https://picsum.photos/seed/ship3/800/300" },
+  { id: 4, title: "Best Sellers", subtitle: "Top picks this week", image: "https://picsum.photos/seed/best4/800/300" },
+  { id: 5, title: "Flash Deals", subtitle: "Limited time only", image: "https://picsum.photos/seed/flash5/800/300" },
 ];
 
 export const importantNotices = [
@@ -91,7 +93,7 @@ export const importantNotices = [
   { id: 3, text: "New collection dropping this week" },
 ];
 
-// Products with enough fields for listing and detail
+// Products with enough fields for listing and detail (images: test picsum URLs for card slider)
 export const allProducts = [
   {
     id: "p1",
@@ -100,7 +102,11 @@ export const allProducts = [
     price: 129.99,
     originalPrice: 159.99,
     discountRate: 19,
-    images: ["/static/placeholder-product.png", "/static/placeholder-product.png"],
+    images: [
+      "https://picsum.photos/seed/p1a/400/400",
+      "https://picsum.photos/seed/p1b/400/400",
+      "https://picsum.photos/seed/p1c/400/400",
+    ],
     categoryId: "elec",
   },
   {
@@ -110,7 +116,10 @@ export const allProducts = [
     price: 299.99,
     originalPrice: 349.99,
     discountRate: 14,
-    images: ["/static/placeholder-product.png"],
+    images: [
+      "https://picsum.photos/seed/p2a/400/400",
+      "https://picsum.photos/seed/p2b/400/400",
+    ],
     categoryId: "elec",
   },
   {
@@ -120,7 +129,11 @@ export const allProducts = [
     price: 79.99,
     originalPrice: 99.99,
     discountRate: 20,
-    images: ["/static/placeholder-product.png"],
+    images: [
+      "https://picsum.photos/seed/p3a/400/400",
+      "https://picsum.photos/seed/p3b/400/400",
+      "https://picsum.photos/seed/p3c/400/400",
+    ],
     categoryId: "fashion",
   },
   {
@@ -130,7 +143,10 @@ export const allProducts = [
     price: 119.99,
     originalPrice: 119.99,
     discountRate: 0,
-    images: ["/static/placeholder-product.png"],
+    images: [
+      "https://picsum.photos/seed/p4a/400/400",
+      "https://picsum.photos/seed/p4b/400/400",
+    ],
     categoryId: "sports",
   },
   {
@@ -140,7 +156,10 @@ export const allProducts = [
     price: 249.99,
     originalPrice: 299.99,
     discountRate: 17,
-    images: ["/static/placeholder-product.png"],
+    images: [
+      "https://picsum.photos/seed/p5a/400/400",
+      "https://picsum.photos/seed/p5b/400/400",
+    ],
     categoryId: "elec",
   },
   {
@@ -150,7 +169,10 @@ export const allProducts = [
     price: 39.99,
     originalPrice: 49.99,
     discountRate: 20,
-    images: ["/static/placeholder-product.png"],
+    images: [
+      "https://picsum.photos/seed/p6a/400/400",
+      "https://picsum.photos/seed/p6b/400/400",
+    ],
     categoryId: "home",
   },
   {
@@ -160,7 +182,10 @@ export const allProducts = [
     price: 59.99,
     originalPrice: 69.99,
     discountRate: 14,
-    images: ["/static/placeholder-product.png"],
+    images: [
+      "https://picsum.photos/seed/p7a/400/400",
+      "https://picsum.photos/seed/p7b/400/400",
+    ],
     categoryId: "fashion",
   },
   {
@@ -170,7 +195,10 @@ export const allProducts = [
     price: 34.99,
     originalPrice: 44.99,
     discountRate: 22,
-    images: ["/static/placeholder-product.png"],
+    images: [
+      "https://picsum.photos/seed/p8a/400/400",
+      "https://picsum.photos/seed/p8b/400/400",
+    ],
     categoryId: "sports",
   },
 ];

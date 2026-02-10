@@ -7,31 +7,73 @@ const AUTO_ADVANCE_MS = 4000;
 export default function AdsSlider() {
   const [index, setIndex] = useState(0);
 
-  useEffect(() => {
-    const t = setInterval(() => {
-      setIndex((i) => (i + 1) % adsSlides.length);
+  useEffect(function () {
+    var t = setInterval(function () {
+      setIndex(function (i) {
+        return (i + 1) % adsSlides.length;
+      });
     }, AUTO_ADVANCE_MS);
-    return () => clearInterval(t);
+    return function () {
+      clearInterval(t);
+    };
   }, []);
 
-  const slide = adsSlides[index];
+  var slide = adsSlides[index];
+  var imageUrl = slide.image || null;
+
   return (
     <Paper
       style={{
         height: "100%",
         minHeight: 200,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "primary.main",
-        color: "white",
         position: "relative",
         overflow: "hidden",
       }}
     >
-      <Box textAlign="center" p={2}>
-        <Typography variant="h5">{slide.title}</Typography>
-        <Typography variant="body1">{slide.subtitle}</Typography>
+      {imageUrl ? (
+        <Box
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundImage: "url(" + imageUrl + ")",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+      ) : (
+        <Box
+          position="absolute"
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
+          bgcolor="primary.main"
+        />
+      )}
+      <Box
+        position="absolute"
+        top={0}
+        left={0}
+        right={0}
+        bottom={0}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        style={{
+          backgroundColor: "rgba(0,0,0,0.35)",
+        }}
+      >
+        <Box textAlign="center" p={2}>
+          <Typography variant="h5" style={{ color: "white", textShadow: "0 1px 2px rgba(0,0,0,0.5)" }}>
+            {slide.title}
+          </Typography>
+          <Typography variant="body1" style={{ color: "rgba(255,255,255,0.95)", textShadow: "0 1px 2px rgba(0,0,0,0.5)" }}>
+            {slide.subtitle}
+          </Typography>
+        </Box>
       </Box>
       <Box
         position="absolute"
@@ -41,20 +83,24 @@ export default function AdsSlider() {
         display="flex"
         justifyContent="center"
       >
-        {adsSlides.map((_, i) => (
-          <Box
-            key={i}
-            onClick={() => setIndex(i)}
-            style={{
-              width: 8,
-              height: 8,
-              borderRadius: "50%",
-              backgroundColor: i === index ? "white" : "rgba(255,255,255,0.4)",
-              margin: "0 4px",
-              cursor: "pointer",
-            }}
-          />
-        ))}
+        {adsSlides.map(function (_, i) {
+          return (
+            <Box
+              key={i}
+              onClick={function () {
+                setIndex(i);
+              }}
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: "50%",
+                backgroundColor: i === index ? "white" : "rgba(255,255,255,0.4)",
+                margin: "0 4px",
+                cursor: "pointer",
+              }}
+            />
+          );
+        })}
       </Box>
     </Paper>
   );

@@ -1,7 +1,5 @@
 import {
   Box,
-  Collapse,
-  IconButton,
   List,
   ListItem,
   ListItemText,
@@ -9,16 +7,19 @@ import {
   Popper,
   Typography,
 } from "@material-ui/core";
-import { ExpandLess, ExpandMore, ChevronRight } from "@material-ui/icons";
+import { ChevronRight } from "@material-ui/icons";
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { categories } from "../../data/shopData";
 
 export default function CategoryDrawer() {
   const [selectedId, setSelectedId] = useState(null);
-  const [expandedLevel2Id, setExpandedLevel2Id] = useState(null);
+  const [level2PopperAnchor, setLevel2PopperAnchor] = useState(null);
+  const [level2PopperChildren, setLevel2PopperChildren] = useState(null);
   const [drawerHeight, setDrawerHeight] = useState(200);
   const containerRef = useRef(null);
+  const firstPopperPaperRef = useRef(null);
+  const secondPopperPaperRef = useRef(null);
   const selected = categories.find(function (c) {
     return c.id === selectedId;
   });
@@ -37,16 +38,37 @@ export default function CategoryDrawer() {
     };
   }, []);
 
+  useEffect(function () {
+    function handleClickOutside(event) {
+      if (!selectedId) return;
+      var target = event.target;
+      if (containerRef.current && containerRef.current.contains(target)) return;
+      if (firstPopperPaperRef.current && firstPopperPaperRef.current.contains(target)) return;
+      if (secondPopperPaperRef.current && secondPopperPaperRef.current.contains(target)) return;
+      setSelectedId(null);
+      setLevel2PopperAnchor(null);
+      setLevel2PopperChildren(null);
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return function () {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [selectedId]);
+
   function handleLevel1Click(parentId) {
     setSelectedId(selectedId === parentId ? null : parentId);
-    setExpandedLevel2Id(null);
+    setLevel2PopperAnchor(null);
+    setLevel2PopperChildren(null);
   }
 
-  function handleLevel2Click(childId, hasChildren) {
-    if (hasChildren) {
-      setExpandedLevel2Id(expandedLevel2Id === childId ? null : childId);
-    }
+  function openLevel3Popper(event, children) {
+    event.preventDefault();
+    event.stopPropagation();
+    setLevel2PopperAnchor(event.currentTarget);
+    setLevel2PopperChildren(children);
   }
+
+  var level3AnchorEl = firstPopperPaperRef.current || null;
 
   return (
     <Paper
@@ -91,6 +113,7 @@ export default function CategoryDrawer() {
         </List>
       </Box>
 
+      {/* First popper: Level 2 */}
       <Popper
         open={Boolean(selectedId && selected)}
         anchorEl={containerRef.current}
@@ -102,6 +125,7 @@ export default function CategoryDrawer() {
         }}
       >
         <Paper
+          ref={firstPopperPaperRef}
           elevation={4}
           style={{
             height: drawerHeight,
@@ -121,84 +145,84 @@ export default function CategoryDrawer() {
               ? selected.children.map(function (child) {
                   const hasChildren =
                     child.children && child.children.length > 0;
-                  const isExpanded = expandedLevel2Id === child.id;
+                  if (hasChildren) {
+                    return (
+                      <ListItem
+                        key={child.id}
+                        button
+                        style={{ borderRadius: 4, marginBottom: 2 }}
+                        onClick={function (e) {
+                          openLevel3Popper(e, child.children);
+                        }}
+                      >
+                        <ListItemText
+                          primary={child.label}
+                          primaryTypographyProps={{ variant: "body2" }}
+                        />
+                        <ChevronRight fontSize="small" />
+                      </ListItem>
+                    );
+                  }
                   return (
-                    <Box key={child.id}>
-                      {hasChildren ? (
-                        <ListItem
-                          style={{ borderRadius: 4, marginBottom: 2 }}
-                          disableGutters
-                        >
-                          <Link
-                            href={`/shop/category?id=${child.id}`}
-                            passHref
-                            style={{ flex: 1, minWidth: 0 }}
-                          >
-                            <ListItemText
-                              primary={child.label}
-                              primaryTypographyProps={{ variant: "body2" }}
-                            />
-                          </Link>
-                          <IconButton
-                            size="small"
-                            onClick={function () {
-                              handleLevel2Click(child.id, true);
-                            }}
-                          >
-                            {isExpanded ? (
-                              <ExpandLess fontSize="small" />
-                            ) : (
-                              <ExpandMore fontSize="small" />
-                            )}
-                          </IconButton>
-                        </ListItem>
-                      ) : (
-                        <Link
-                          href={`/shop/category?id=${child.id}`}
-                          passHref
-                          style={{ display: "block", marginBottom: 2 }}
-                        >
-                          <ListItem button component="a" style={{ borderRadius: 4 }}>
-                            <ListItemText
-                              primary={child.label}
-                              primaryTypographyProps={{ variant: "body2" }}
-                            />
-                          </ListItem>
-                        </Link>
-                      )}
-                      {hasChildren && (
-                        <Collapse in={isExpanded} timeout="auto" unmountOnExit>
-                          <List dense disablePadding component="div">
-                            {child.children.map(function (grandchild) {
-                              return (
-                                <Link
-                                  href={`/shop/category?id=${grandchild.id}`}
-                                  key={grandchild.id}
-                                  passHref
-                                >
-                                  <ListItem
-                                    button
-                                    component="a"
-                                    style={{
-                                      paddingLeft: 32,
-                                      borderRadius: 4,
-                                      marginBottom: 2,
-                                    }}
-                                  >
-                                    <ListItemText
-                                      primary={grandchild.label}
-                                      primaryTypographyProps={{
-                                        variant: "body2",
-                                      }}
-                                    />
-                                  </ListItem>
-                                </Link>
-                              );
-                            })}
-                          </List>
-                        </Collapse>
-                      )}
-                    </Box>
+                    <Link
+                      href={`/shop/category?id=${child.id}`}
+                      key={child.id}
+                      passHref
+                      style={{ display: "block", marginBottom: 2 }}
+                    >
+                      <ListItem button component="a" style={{ borderRadius: 4 }}>
+                        <ListItemText
+                          primary={child.label}
+                          primaryTypographyProps={{ variant: "body2" }}
+                        />
+                      </ListItem>
+                    </Link>
+                  );
+                })
+              : null}
+          </List>
+        </Paper>
+      </Popper>
+
+      {/* Second popper: Level 3 - anchored to first popper panel for same top offset */}
+      <Popper
+        open={Boolean(level2PopperAnchor && level2PopperChildren && level3AnchorEl)}
+        anchorEl={level3AnchorEl}
+        placement="right-start"
+        style={{ zIndex: 1310 }}
+        modifiers={{
+          flip: { enabled: false },
+          preventOverflow: { enabled: true, boundariesElement: "viewport" },
+        }}
+      >
+        <Paper
+          ref={secondPopperPaperRef}
+          elevation={4}
+          style={{
+            height: drawerHeight,
+            minWidth: 160,
+            overflow: "hidden",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <List dense disablePadding style={{ flex: 1, overflow: "auto", paddingTop: 8, paddingBottom: 8 }}>
+            {level2PopperChildren
+              ? level2PopperChildren.map(function (grandchild) {
+                  return (
+                    <Link
+                      href={`/shop/category?id=${grandchild.id}`}
+                      key={grandchild.id}
+                      passHref
+                      style={{ display: "block", marginBottom: 2 }}
+                    >
+                      <ListItem button component="a" style={{ borderRadius: 4 }}>
+                        <ListItemText
+                          primary={grandchild.label}
+                          primaryTypographyProps={{ variant: "body2" }}
+                        />
+                      </ListItem>
+                    </Link>
                   );
                 })
               : null}

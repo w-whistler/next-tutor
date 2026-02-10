@@ -1,8 +1,11 @@
 import { useRouter } from "next/router";
+import Link from "next/link";
 import {
+  Badge,
   Box,
   FormControl,
   FormControlLabel,
+  IconButton,
   InputBase,
   InputLabel,
   MenuItem,
@@ -10,8 +13,9 @@ import {
   Select,
   Switch,
 } from "@material-ui/core";
-import { Search as SearchIcon } from "@material-ui/icons";
-import { useState, useEffect } from "react";
+import { Search as SearchIcon, ShoppingCartOutlined } from "@material-ui/icons";
+import { useState, useEffect, useContext } from "react";
+import { CartContext } from "../../context/CartContext";
 import { categories } from "../../data/shopData";
 
 const SORT_OPTIONS = [
@@ -23,6 +27,7 @@ const SORT_OPTIONS = [
 
 export default function ShopSecondaryBar() {
   const router = useRouter();
+  const { cart } = useContext(CartContext);
   const { q = "", sort = "", category = "", onsale = "" } = router.query;
   const [searchQuery, setSearchQuery] = useState(q);
   const [sortBy, setSortBy] = useState(sort);
@@ -143,6 +148,13 @@ export default function ShopSecondaryBar() {
             label="On sale"
             style={{ marginLeft: 12 }}
           />
+          <Link href="/shop/cart" passHref>
+            <IconButton color="primary" aria-label="Cart" style={{ marginLeft: 8 }}>
+              <Badge badgeContent={cart.length} color="secondary">
+                <ShoppingCartOutlined />
+              </Badge>
+            </IconButton>
+          </Link>
         </Box>
       </Box>
     </Paper>

@@ -15,11 +15,13 @@ import {
 import Link from "next/link";
 import { useState, useContext } from "react";
 import { CartContext } from "../../context/CartContext";
+import { WishlistContext } from "../../context/WishlistContext";
 
 export default function ProductCard({ product }) {
   const [imageIndex, setImageIndex] = useState(0);
-  const [liked, setLiked] = useState(false);
   const { addToCart } = useContext(CartContext);
+  const { isLiked, toggleLike } = useContext(WishlistContext);
+  const liked = isLiked(product.id);
   const hasDiscount = product.discountRate > 0;
   const images = product.images && product.images.length > 0
     ? product.images
@@ -42,7 +44,7 @@ export default function ProductCard({ product }) {
   function handleLike(e) {
     e.preventDefault();
     e.stopPropagation();
-    setLiked(!liked);
+    toggleLike(product.id);
   }
 
   function handleCompare(e) {

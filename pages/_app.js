@@ -2,7 +2,9 @@ import DiscussionLayout from "../components/layouts/DiscussionLayout";
 import GameLayout from "../components/layouts/GameLayout";
 import IntroLayout from "../components/layouts/IntroLayout";
 import ShopLayout from "../components/layouts/ShopLayout";
+import { AuthProvider } from "../context/AuthContext";
 import { CartProvider } from "../context/CartContext";
+import { WishlistProvider } from "../context/WishlistContext";
 import { CssBaseline } from "@material-ui/core";
 
 export default function MyApp({ Component, pageProps, router }) {
@@ -14,13 +16,17 @@ export default function MyApp({ Component, pageProps, router }) {
   const page = <Component {...pageProps} />;
 
   return (
-    <CartProvider>
-      <CssBaseline />
+    <AuthProvider>
+      <CartProvider>
+        <WishlistProvider>
+          <CssBaseline />
       {isShopPage && <ShopLayout>{page}</ShopLayout>}
       {isDiscussionPage && <DiscussionLayout>{page}</DiscussionLayout>}
       {isGamePage && <GameLayout>{page}</GameLayout>}
       {isIntroPage && <IntroLayout>{page}</IntroLayout>}
       {!isShopPage && !isDiscussionPage && !isGamePage && !isIntroPage && page}
-    </CartProvider>
+        </WishlistProvider>
+      </CartProvider>
+    </AuthProvider>
   );
 }

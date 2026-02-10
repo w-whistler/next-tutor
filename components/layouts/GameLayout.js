@@ -1,20 +1,18 @@
-import { Box } from "@material-ui/core";
+import { Box, Container, Typography } from "@material-ui/core";
 import Head from "next/head";
 import SharedFooter from "../SharedFooter";
 import SharedTopBar from "./SharedTopBar";
-import ShopSecondaryBar from "../shop/ShopSecondaryBar";
 
-export default function ShopLayout({ children }) {
+export default function GameLayout({ children }) {
   return (
     <>
       <Head>
-        <title>eCommerce | Store</title>
+        <title>Game | Store</title>
         <link rel="icon" href="/static/favicon.ico" />
       </Head>
       <SharedTopBar />
-      <ShopSecondaryBar />
-      <Box component="main" minHeight="60vh" pb={4}>
-        {children}
+      <Box component="main" minHeight="60vh" p={2} pb={4}>
+        <Container maxWidth="lg">{children}</Container>
       </Box>
       <SharedFooter />
     </>

@@ -25,7 +25,7 @@ export default function AdsSlider() {
     <Paper
       style={{
         height: "100%",
-        minHeight: 200,
+        minHeight: 360,
         position: "relative",
         overflow: "hidden",
       }}

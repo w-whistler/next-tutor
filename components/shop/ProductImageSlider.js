@@ -1,6 +1,6 @@
 import { Box, IconButton } from "@material-ui/core";
 import { ChevronLeft, ChevronRight } from "@material-ui/icons";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export default function ProductImageSlider(props) {
   var images = props.images;
@@ -9,10 +9,60 @@ export default function ProductImageSlider(props) {
   var _useState = useState(0),
     index = _useState[0],
     setIndex = _useState[1];
+  var _useState2 = useState(false),
+    showThumbArrows = _useState2[0],
+    setShowThumbArrows = _useState2[1];
+  var thumbScrollRef = useRef(null);
+  var roRef = useRef(null);
   var current = list[index];
 
+  useEffect(
+    function () {
+      if (list.length <= 1) return;
+      var id = requestAnimationFrame(function () {
+        var el = thumbScrollRef.current;
+        if (!el) return;
+        function check() {
+          setShowThumbArrows(el.scrollWidth > el.clientWidth);
+        }
+        check();
+        var ro = new ResizeObserver(check);
+        roRef.current = ro;
+        ro.observe(el);
+      });
+      return function () {
+        cancelAnimationFrame(id);
+        if (roRef.current) {
+          roRef.current.disconnect();
+          roRef.current = null;
+        }
+      };
+    },
+    [list.length]
+  );
+
+  useEffect(
+    function () {
+      if (list.length <= 1) return;
+      var id = requestAnimationFrame(function () {
+        var el = thumbScrollRef.current;
+        if (!el) return;
+        var thumbWidth = 56;
+        var thumbMargin = 8;
+        var totalWidth = thumbWidth + thumbMargin;
+        var centerOfThumb = index * totalWidth + thumbWidth / 2;
+        var scrollLeft = centerOfThumb - el.clientWidth / 2;
+        el.scrollLeft = Math.max(0, Math.min(scrollLeft, el.scrollWidth - el.clientWidth));
+      });
+      return function () {
+        cancelAnimationFrame(id);
+      };
+    },
+    [index, list.length]
+  );
+
   return (
-    <Box style={{ overflow: "hidden", maxWidth: 360 }}>
+    <Box style={{ overflow: "hidden", width: 360, minWidth: 360, flexShrink: 0 }}>
       <Box position="relative" bgcolor="grey.200">
         <Box
           position="relative"
@@ -74,49 +124,89 @@ export default function ProductImageSlider(props) {
       {list.length > 1 && (
         <Box
           py={1.5}
-          px={1}
-          style={{
-            display: "flex",
-            flexWrap: "nowrap",
-            justifyContent: "flex-start",
-            overflowX: "auto",
-            overflowY: "hidden",
-            maxHeight: 72,
-          }}
+          px={0}
+          display="flex"
+          alignItems="center"
+          style={{ maxHeight: 72, overflow: "hidden" }}
         >
-          {list.map(function (img, i) {
-            var isSelected = i === index;
-            return (
-              <Box
-                key={i}
-                onClick={function () {
-                  setIndex(i);
-                }}
-                style={{
-                  width: 56,
-                  height: 56,
-                  flexShrink: 0,
-                  borderRadius: 4,
-                  overflow: "hidden",
-                  cursor: "pointer",
-                  border: isSelected ? "2px solid" : "2px solid transparent",
-                  borderColor: isSelected ? "primary.main" : "transparent",
-                  boxSizing: "border-box",
-                  margin: 4,
-                }}
-              >
+          {showThumbArrows && (
+            <IconButton
+              size="small"
+              onClick={function () {
+                if (thumbScrollRef.current) {
+                  thumbScrollRef.current.scrollBy({ left: -64, behavior: "smooth" });
+                }
+              }}
+              style={{ padding: 4, flexShrink: 0 }}
+            >
+              <ChevronLeft fontSize="small" />
+            </IconButton>
+          )}
+          <Box
+            ref={thumbScrollRef}
+            py={0}
+            px={1}
+            style={{
+              flex: 1,
+              minWidth: 0,
+              display: "flex",
+              flexWrap: "nowrap",
+              justifyContent: "flex-start",
+              overflowX: "auto",
+              overflowY: "hidden",
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+              WebkitOverflowScrolling: "touch",
+            }}
+            className="product-slider-thumb-scroll"
+          >
+            {list.map(function (img, i) {
+              var isSelected = i === index;
+              return (
                 <Box
-                  width="100%"
-                  height="100%"
-                  style={{
-                    backgroundImage: "url(" + img + ")",
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
+                  key={i}
+                  onClick={function () {
+                    setIndex(i);
                   }}
-                />
-              </Box>
-            );
-          })}
+                  style={{
+                    width: 56,
+                    height: 56,
+                    flexShrink: 0,
+                    borderRadius: 4,
+                    overflow: "hidden",
+                    cursor: "pointer",
+                    border: isSelected ? "2px solid" : "2px solid transparent",
+                    borderColor: isSelected ? "primary.main" : "transparent",
+                    boxSizing: "border-box",
+                    margin: 4,
+                  }}
+                >
+                  <Box
+                    width="100%"
+                    height="100%"
+                    style={{
+                      backgroundImage: "url(" + img + ")",
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }}
+                  />
+                </Box>
+              );
+            })}
+          </Box>
+          {showThumbArrows && (
+            <IconButton
+              size="small"
+              onClick={function () {
+                if (thumbScrollRef.current) {
+                  thumbScrollRef.current.scrollBy({ left: 64, behavior: "smooth" });
+                }
+              }}
+              style={{ padding: 4, flexShrink: 0 }}
+            >
+              <ChevronRight fontSize="small" />
+            </IconButton>
+          )}
         </Box>
       )}
     </Box>

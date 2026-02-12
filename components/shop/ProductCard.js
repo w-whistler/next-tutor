@@ -59,6 +59,26 @@ export default function ProductCard({ product }) {
     [hasMultiple, images.length]
   );
 
+  useEffect(
+    function () {
+      if (!hasMultiple) return;
+      var id = requestAnimationFrame(function () {
+        var el = thumbScrollRef.current;
+        if (!el) return;
+        var thumbWidth = 36;
+        var thumbMargin = 4;
+        var totalWidth = thumbWidth + thumbMargin;
+        var centerOfThumb = imageIndex * totalWidth + thumbWidth / 2;
+        var scrollLeft = centerOfThumb - el.clientWidth / 2;
+        el.scrollLeft = Math.max(0, Math.min(scrollLeft, el.scrollWidth - el.clientWidth));
+      });
+      return function () {
+        cancelAnimationFrame(id);
+      };
+    },
+    [imageIndex, hasMultiple, images.length]
+  );
+
   function handleAddToCart(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -125,6 +145,7 @@ export default function ProductCard({ product }) {
               style={{
                 backgroundColor: "rgba(0,0,0,0.4)",
                 maxHeight: 44,
+                overflow: "hidden",
               }}
             >
               {showThumbArrows && (
@@ -146,9 +167,10 @@ export default function ProductCard({ product }) {
                 ref={thumbScrollRef}
                 display="flex"
                 flexWrap="nowrap"
-                justifyContent="center"
+                justifyContent="flex-start"
                 style={{
                   flex: 1,
+                  minWidth: 0,
                   overflowX: "auto",
                   overflowY: "hidden",
                   scrollbarWidth: "none",

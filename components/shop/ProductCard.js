@@ -165,9 +165,6 @@ export default function ProductCard({ product }) {
               )}
               <Box
                 ref={thumbScrollRef}
-                display="flex"
-                flexWrap="nowrap"
-                justifyContent="flex-start"
                 style={{
                   flex: 1,
                   minWidth: 0,
@@ -176,43 +173,46 @@ export default function ProductCard({ product }) {
                   scrollbarWidth: "none",
                   msOverflowStyle: "none",
                   WebkitOverflowScrolling: "touch",
+                  textAlign: "center",
                 }}
                 className="product-card-thumb-scroll"
               >
-                {images.map(function (img, i) {
-                  var isSelected = i === imageIndex;
-                  return (
-                    <Box
-                      key={i}
-                      onClick={function (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        setImageIndex(i);
-                      }}
-                      style={{
-                        width: 36,
-                        height: 36,
-                        flexShrink: 0,
-                        borderRadius: 4,
-                        overflow: "hidden",
-                        cursor: "pointer",
-                        border: isSelected ? "2px solid white" : "1px solid rgba(255,255,255,0.5)",
-                        boxSizing: "border-box",
-                        margin: "0 2px",
-                      }}
-                    >
+                <Box display="inline-flex" flexWrap="nowrap" style={{ padding: "0 2px" }}>
+                  {images.map(function (img, i) {
+                    var isSelected = i === imageIndex;
+                    return (
                       <Box
-                        width="100%"
-                        height="100%"
-                        style={{
-                          backgroundImage: "url(" + img + ")",
-                          backgroundSize: "cover",
-                          backgroundPosition: "center",
+                        key={i}
+                        onClick={function (e) {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setImageIndex(i);
                         }}
-                      />
-                    </Box>
-                  );
-                })}
+                        style={{
+                          width: 36,
+                          height: 36,
+                          flexShrink: 0,
+                          borderRadius: 4,
+                          overflow: "hidden",
+                          cursor: "pointer",
+                          border: isSelected ? "2px solid white" : "1px solid rgba(255,255,255,0.5)",
+                          boxSizing: "border-box",
+                          margin: "0 2px",
+                        }}
+                      >
+                        <Box
+                          width="100%"
+                          height="100%"
+                          style={{
+                            backgroundImage: "url(" + img + ")",
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                          }}
+                        />
+                      </Box>
+                    );
+                  })}
+                </Box>
               </Box>
               {showThumbArrows && (
                 <IconButton

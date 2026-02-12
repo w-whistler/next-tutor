@@ -37,14 +37,14 @@ export default function ProductCard({ product }) {
   useEffect(
     function () {
       if (!hasMultiple) return;
-      var id = requestAnimationFrame(function () {
-        var el = thumbScrollRef.current;
+      const id = requestAnimationFrame(function () {
+        const el = thumbScrollRef.current;
         if (!el) return;
         function check() {
           setShowThumbArrows(el.scrollWidth > el.clientWidth);
         }
         check();
-        var ro = new ResizeObserver(check);
+        const ro = new ResizeObserver(check);
         roRef.current = ro;
         ro.observe(el);
       });
@@ -62,14 +62,14 @@ export default function ProductCard({ product }) {
   useEffect(
     function () {
       if (!hasMultiple) return;
-      var id = requestAnimationFrame(function () {
-        var el = thumbScrollRef.current;
+      const id = requestAnimationFrame(function () {
+        const el = thumbScrollRef.current;
         if (!el) return;
-        var thumbWidth = 36;
-        var thumbMargin = 4;
-        var totalWidth = thumbWidth + thumbMargin;
-        var centerOfThumb = imageIndex * totalWidth + thumbWidth / 2;
-        var scrollLeft = centerOfThumb - el.clientWidth / 2;
+        const thumbWidth = 36;
+        const thumbMargin = 4;
+        const totalWidth = thumbWidth + thumbMargin;
+        const centerOfThumb = imageIndex * totalWidth + thumbWidth / 2;
+        const scrollLeft = centerOfThumb - el.clientWidth / 2;
         el.scrollLeft = Math.max(0, Math.min(scrollLeft, el.scrollWidth - el.clientWidth));
       });
       return function () {
@@ -179,7 +179,7 @@ export default function ProductCard({ product }) {
               >
                 <Box display="inline-flex" flexWrap="nowrap" style={{ padding: "0 2px" }}>
                   {images.map(function (img, i) {
-                    var isSelected = i === imageIndex;
+                    const isSelected = i === imageIndex;
                     return (
                       <Box
                         key={i}

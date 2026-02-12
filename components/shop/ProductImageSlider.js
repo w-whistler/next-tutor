@@ -3,30 +3,25 @@ import { ChevronLeft, ChevronRight } from "@material-ui/icons";
 import { useState, useRef, useEffect } from "react";
 
 export default function ProductImageSlider(props) {
-  var images = props.images;
-  if (!images || !images.length) images = [];
-  var list = images.length ? images : ["https://picsum.photos/seed/placeholder/400/400"];
-  var _useState = useState(0),
-    index = _useState[0],
-    setIndex = _useState[1];
-  var _useState2 = useState(false),
-    showThumbArrows = _useState2[0],
-    setShowThumbArrows = _useState2[1];
-  var thumbScrollRef = useRef(null);
-  var roRef = useRef(null);
-  var current = list[index];
+  const images = props.images && props.images.length > 0 ? props.images : [];
+  const list = images.length ? images : ["https://picsum.photos/seed/placeholder/400/400"];
+  const [index, setIndex] = useState(0);
+  const [showThumbArrows, setShowThumbArrows] = useState(false);
+  const thumbScrollRef = useRef(null);
+  const roRef = useRef(null);
+  const current = list[index];
 
   useEffect(
     function () {
       if (list.length <= 1) return;
-      var id = requestAnimationFrame(function () {
-        var el = thumbScrollRef.current;
+      const id = requestAnimationFrame(function () {
+        const el = thumbScrollRef.current;
         if (!el) return;
         function check() {
           setShowThumbArrows(el.scrollWidth > el.clientWidth);
         }
         check();
-        var ro = new ResizeObserver(check);
+        const ro = new ResizeObserver(check);
         roRef.current = ro;
         ro.observe(el);
       });
@@ -44,14 +39,14 @@ export default function ProductImageSlider(props) {
   useEffect(
     function () {
       if (list.length <= 1) return;
-      var id = requestAnimationFrame(function () {
-        var el = thumbScrollRef.current;
+      const id = requestAnimationFrame(function () {
+        const el = thumbScrollRef.current;
         if (!el) return;
-        var thumbWidth = 56;
-        var thumbMargin = 8;
-        var totalWidth = thumbWidth + thumbMargin;
-        var centerOfThumb = index * totalWidth + thumbWidth / 2;
-        var scrollLeft = centerOfThumb - el.clientWidth / 2;
+        const thumbWidth = 56;
+        const thumbMargin = 8;
+        const totalWidth = thumbWidth + thumbMargin;
+        const centerOfThumb = index * totalWidth + thumbWidth / 2;
+        const scrollLeft = centerOfThumb - el.clientWidth / 2;
         el.scrollLeft = Math.max(0, Math.min(scrollLeft, el.scrollWidth - el.clientWidth));
       });
       return function () {
@@ -161,7 +156,7 @@ export default function ProductImageSlider(props) {
             className="product-slider-thumb-scroll"
           >
             {list.map(function (img, i) {
-              var isSelected = i === index;
+              const isSelected = i === index;
               return (
                 <Box
                   key={i}

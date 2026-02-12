@@ -41,7 +41,7 @@ export default function CategoryDrawer() {
   useEffect(function () {
     function handleClickOutside(event) {
       if (!selectedId) return;
-      var target = event.target;
+      const target = event.target;
       if (containerRef.current && containerRef.current.contains(target)) return;
       if (firstPopperPaperRef.current && firstPopperPaperRef.current.contains(target)) return;
       if (secondPopperPaperRef.current && secondPopperPaperRef.current.contains(target)) return;
@@ -68,7 +68,7 @@ export default function CategoryDrawer() {
     setLevel2PopperChildren(children);
   }
 
-  var level3AnchorEl = firstPopperPaperRef.current || null;
+  const level3AnchorEl = firstPopperPaperRef.current || null;
 
   return (
     <Paper

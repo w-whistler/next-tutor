@@ -7,12 +7,12 @@ import { allProducts, categories } from "../../data/shopData";
 
 function findCategoryPath(id, nodes, path) {
   if (!id || !nodes) return null;
-  for (var i = 0; i < nodes.length; i++) {
-    var node = nodes[i];
-    var nextPath = path.concat([node.label]);
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i];
+    const nextPath = path.concat([node.label]);
     if (node.id === id) return nextPath;
     if (node.children && node.children.length > 0) {
-      var found = findCategoryPath(id, node.children, nextPath);
+      const found = findCategoryPath(id, node.children, nextPath);
       if (found) return found;
     }
   }
@@ -20,13 +20,13 @@ function findCategoryPath(id, nodes, path) {
 }
 
 function getLevel1Id(id) {
-  for (var i = 0; i < categories.length; i++) {
+  for (let i = 0; i < categories.length; i++) {
     if (categories[i].id === id) return id;
-    var level2 = categories[i].children || [];
-    for (var j = 0; j < level2.length; j++) {
+    const level2 = categories[i].children || [];
+    for (let j = 0; j < level2.length; j++) {
       if (level2[j].id === id) return categories[i].id;
-      var level3 = level2[j].children || [];
-      for (var k = 0; k < level3.length; k++) {
+      const level3 = level2[j].children || [];
+      for (let k = 0; k < level3.length; k++) {
         if (level3[k].id === id) return categories[i].id;
       }
     }
@@ -40,7 +40,7 @@ export default function CategoryPage() {
   const products = useMemo(
     function () {
       if (!id || typeof id !== "string") return [];
-      var level1Id = getLevel1Id(id);
+      const level1Id = getLevel1Id(id);
       return allProducts.filter(function (p) {
         return p.categoryId === level1Id;
       });
@@ -51,7 +51,7 @@ export default function CategoryPage() {
   const categoryLabel = useMemo(
     function () {
       if (!id) return "";
-      var path = findCategoryPath(id, categories, []);
+      const path = findCategoryPath(id, categories, []);
       return path ? path.join(" › ") : id;
     },
     [id]

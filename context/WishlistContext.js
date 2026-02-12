@@ -1,21 +1,19 @@
 import { createContext, useState, useEffect, useRef } from "react";
 
-var STORAGE_KEY = "store_wishlist";
+const STORAGE_KEY = "store_wishlist";
 
-export var WishlistContext = createContext();
+export const WishlistContext = createContext();
 
 export function WishlistProvider(props) {
-  var children = props.children;
-  var _useState = useState([]),
-    likedIds = _useState[0],
-    setLikedIds = _useState[1];
-  var loadedRef = useRef(false);
+  const { children } = props;
+  const [likedIds, setLikedIds] = useState([]);
+  const loadedRef = useRef(false);
 
   useEffect(function () {
     try {
-      var s = typeof window !== "undefined" && window.localStorage.getItem(STORAGE_KEY);
+      const s = typeof window !== "undefined" && window.localStorage.getItem(STORAGE_KEY);
       if (s) {
-        var parsed = JSON.parse(s);
+        const parsed = JSON.parse(s);
         if (Array.isArray(parsed)) setLikedIds(parsed);
       }
     } catch (e) {}
@@ -37,7 +35,7 @@ export function WishlistProvider(props) {
 
   function toggleLike(productId) {
     setLikedIds(function (prev) {
-      var i = prev.indexOf(productId);
+      const i = prev.indexOf(productId);
       if (i >= 0) return prev.slice(0, i).concat(prev.slice(i + 1));
       return prev.concat([productId]);
     });

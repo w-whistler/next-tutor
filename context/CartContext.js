@@ -1,21 +1,19 @@
 import { createContext, useState, useEffect, useRef } from "react";
 
-var STORAGE_KEY = "store_cart";
+const STORAGE_KEY = "store_cart";
 
-export var CartContext = createContext();
+export const CartContext = createContext();
 
 export function CartProvider(props) {
-  var children = props.children;
-  var _useState = useState([]),
-    cart = _useState[0],
-    setCart = _useState[1];
-  var loadedRef = useRef(false);
+  const { children } = props;
+  const [cart, setCart] = useState([]);
+  const loadedRef = useRef(false);
 
   useEffect(function () {
     try {
-      var s = typeof window !== "undefined" && window.localStorage.getItem(STORAGE_KEY);
+      const s = typeof window !== "undefined" && window.localStorage.getItem(STORAGE_KEY);
       if (s) {
-        var parsed = JSON.parse(s);
+        const parsed = JSON.parse(s);
         if (Array.isArray(parsed)) setCart(parsed);
       }
     } catch (e) {}

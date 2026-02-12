@@ -1,21 +1,19 @@
 import { createContext, useState, useEffect, useRef } from "react";
 
-var STORAGE_KEY = "store_user";
+const STORAGE_KEY = "store_user";
 
-export var AuthContext = createContext();
+export const AuthContext = createContext();
 
 export function AuthProvider(props) {
-  var children = props.children;
-  var _useState = useState(null),
-    user = _useState[0],
-    setUser = _useState[1];
-  var loadedRef = useRef(false);
+  const { children } = props;
+  const [user, setUser] = useState(null);
+  const loadedRef = useRef(false);
 
   useEffect(function () {
     try {
-      var s = typeof window !== "undefined" && window.localStorage.getItem(STORAGE_KEY);
+      const s = typeof window !== "undefined" && window.localStorage.getItem(STORAGE_KEY);
       if (s) {
-        var parsed = JSON.parse(s);
+        const parsed = JSON.parse(s);
         if (parsed && typeof parsed === "object") setUser(parsed);
       }
     } catch (e) {}

@@ -8,7 +8,7 @@ export default function AdsSlider() {
   const [index, setIndex] = useState(0);
 
   useEffect(function () {
-    var t = setInterval(function () {
+    const t = setInterval(function () {
       setIndex(function (i) {
         return (i + 1) % adsSlides.length;
       });
@@ -18,8 +18,8 @@ export default function AdsSlider() {
     };
   }, []);
 
-  var slide = adsSlides[index];
-  var imageUrl = slide.image || null;
+  const slide = adsSlides[index];
+  const imageUrl = slide.image || null;
 
   return (
     <Paper

@@ -20,6 +20,7 @@ export default function MyApp({ Component, pageProps, router }) {
       <CartProvider>
         <WishlistProvider>
           <CssBaseline />
+          <style dangerouslySetInnerHTML={{ __html: ".product-card-thumb-scroll::-webkit-scrollbar,.product-slider-thumb-scroll::-webkit-scrollbar{display:none}" }} />
       {isShopPage && <ShopLayout>{page}</ShopLayout>}
       {isDiscussionPage && <DiscussionLayout>{page}</DiscussionLayout>}
       {isGamePage && <GameLayout>{page}</GameLayout>}

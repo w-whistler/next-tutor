@@ -8,17 +8,22 @@ import {
 } from "@material-ui/core";
 import {
   AddShoppingCart,
+  ChevronLeft,
+  ChevronRight,
   FavoriteBorder,
   Favorite,
   CompareArrows,
 } from "@material-ui/icons";
 import Link from "next/link";
-import { useState, useContext } from "react";
+import { useState, useContext, useRef, useEffect } from "react";
 import { CartContext } from "../../context/CartContext";
 import { WishlistContext } from "../../context/WishlistContext";
 
 export default function ProductCard({ product }) {
   const [imageIndex, setImageIndex] = useState(0);
+  const [showThumbArrows, setShowThumbArrows] = useState(false);
+  const thumbScrollRef = useRef(null);
+  const roRef = useRef(null);
   const { addToCart } = useContext(CartContext);
   const { isLiked, toggleLike } = useContext(WishlistContext);
   const liked = isLiked(product.id);
@@ -28,6 +33,31 @@ export default function ProductCard({ product }) {
     : ["https://picsum.photos/seed/" + product.id + "/400/400"];
   const currentImage = images[imageIndex];
   const hasMultiple = images.length > 1;
+
+  useEffect(
+    function () {
+      if (!hasMultiple) return;
+      var id = requestAnimationFrame(function () {
+        var el = thumbScrollRef.current;
+        if (!el) return;
+        function check() {
+          setShowThumbArrows(el.scrollWidth > el.clientWidth);
+        }
+        check();
+        var ro = new ResizeObserver(check);
+        roRef.current = ro;
+        ro.observe(el);
+      });
+      return function () {
+        cancelAnimationFrame(id);
+        if (roRef.current) {
+          roRef.current.disconnect();
+          roRef.current = null;
+        }
+      };
+    },
+    [hasMultiple, images.length]
+  );
 
   function handleAddToCart(e) {
     e.preventDefault();
@@ -70,12 +100,6 @@ export default function ProductCard({ product }) {
             backgroundColor: "grey.200",
             overflow: "hidden",
           }}
-          onMouseEnter={function () {
-            if (hasMultiple && imageIndex === 0) setImageIndex(1);
-          }}
-          onMouseLeave={function () {
-            setImageIndex(0);
-          }}
         >
           <Box
             position="absolute"
@@ -92,32 +116,97 @@ export default function ProductCard({ product }) {
           {hasMultiple && (
             <Box
               position="absolute"
-              bottom={6}
+              bottom={0}
               left={0}
               right={0}
               display="flex"
-              justifyContent="center"
+              alignItems="center"
+              py={0.5}
+              style={{
+                backgroundColor: "rgba(0,0,0,0.4)",
+                maxHeight: 44,
+              }}
             >
-              {images.map(function (_, i) {
-                return (
-                  <Box
-                    key={i}
-                    onClick={function (e) {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setImageIndex(i);
-                    }}
-                    style={{
-                      width: 6,
-                      height: 6,
-                      borderRadius: "50%",
-                      backgroundColor: i === imageIndex ? "white" : "rgba(255,255,255,0.5)",
-                      margin: "0 3px",
-                      cursor: "pointer",
-                    }}
-                  />
-                );
-              })}
+              {showThumbArrows && (
+                <IconButton
+                  size="small"
+                  onClick={function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (thumbScrollRef.current) {
+                      thumbScrollRef.current.scrollBy({ left: -44, behavior: "smooth" });
+                    }
+                  }}
+                  style={{ color: "white", padding: 4 }}
+                >
+                  <ChevronLeft fontSize="small" />
+                </IconButton>
+              )}
+              <Box
+                ref={thumbScrollRef}
+                display="flex"
+                flexWrap="nowrap"
+                justifyContent="center"
+                style={{
+                  flex: 1,
+                  overflowX: "auto",
+                  overflowY: "hidden",
+                  scrollbarWidth: "none",
+                  msOverflowStyle: "none",
+                  WebkitOverflowScrolling: "touch",
+                }}
+                className="product-card-thumb-scroll"
+              >
+                {images.map(function (img, i) {
+                  var isSelected = i === imageIndex;
+                  return (
+                    <Box
+                      key={i}
+                      onClick={function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setImageIndex(i);
+                      }}
+                      style={{
+                        width: 36,
+                        height: 36,
+                        flexShrink: 0,
+                        borderRadius: 4,
+                        overflow: "hidden",
+                        cursor: "pointer",
+                        border: isSelected ? "2px solid white" : "1px solid rgba(255,255,255,0.5)",
+                        boxSizing: "border-box",
+                        margin: "0 2px",
+                      }}
+                    >
+                      <Box
+                        width="100%"
+                        height="100%"
+                        style={{
+                          backgroundImage: "url(" + img + ")",
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                        }}
+                      />
+                    </Box>
+                  );
+                })}
+              </Box>
+              {showThumbArrows && (
+                <IconButton
+                  size="small"
+                  onClick={function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (thumbScrollRef.current) {
+                      thumbScrollRef.current.scrollBy({ left: 44, behavior: "smooth" });
+                    }
+                  }}
+                  style={{ color: "white", padding: 4 }}
+                >
+                  <ChevronRight fontSize="small" />
+                </IconButton>
+              )}
             </Box>
           )}
         </a>

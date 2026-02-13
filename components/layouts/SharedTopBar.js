@@ -46,13 +46,16 @@ function SharedTopBar() {
             component="a"
             display="flex"
             alignItems="center"
-            style={{ textDecoration: "none", height: 40 }}
+            style={{ textDecoration: "none", color: "inherit", height: 40 }}
           >
             <img
               src="/static/logo.svg"
-              alt="Store"
+              alt=""
               style={{ height: 36, display: "block" }}
             />
+            <Typography variant="h6" component="span" style={{ marginLeft: 12 }}>
+              G-Store
+            </Typography>
           </Box>
         </Link>
         <Box flexGrow={1} />

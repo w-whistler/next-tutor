@@ -22,12 +22,15 @@ function SharedFooter() {
         <Container maxWidth="lg">
           <Grid container spacing={3} justify="space-between">
             <Grid item xs={12} sm={4}>
-              <Box mb={1}>
+              <Box display="flex" alignItems="center" mb={1}>
                 <img
                   src="/static/logo.svg"
-                  alt="Store"
+                  alt=""
                   style={{ height: 32, display: "block" }}
                 />
+                <Typography variant="h6" component="span" style={{ marginLeft: 10, color: "rgba(255,255,255,0.95)" }}>
+                  G-Store
+                </Typography>
               </Box>
               <Typography variant="body2" style={{ color: "rgba(255,255,255,0.9)" }}>
                 Your multi-business platform.

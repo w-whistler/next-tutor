@@ -42,13 +42,18 @@ function SharedTopBar() {
     <AppBar position="static">
       <Toolbar>
         <Link href="/" passHref>
-          <Typography
-            variant="h6"
+          <Box
             component="a"
-            style={{ color: "inherit", textDecoration: "none" }}
+            display="flex"
+            alignItems="center"
+            style={{ textDecoration: "none", height: 40 }}
           >
-            Store
-          </Typography>
+            <img
+              src="/static/logo.svg"
+              alt="Store"
+              style={{ height: 36, display: "block" }}
+            />
+          </Box>
         </Link>
         <Box flexGrow={1} />
         <Link href="/shop" passHref>

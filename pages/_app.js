@@ -7,6 +7,8 @@ import { AuthProvider } from "../context/AuthContext";
 import { CartProvider } from "../context/CartContext";
 import { WishlistProvider } from "../context/WishlistContext";
 import { CssBaseline } from "@material-ui/core";
+import { ThemeProvider } from "@material-ui/core/styles";
+import theme from "../lib/theme";
 
 export default function MyApp({ Component, pageProps, router }) {
   const pathname = router.pathname;
@@ -43,18 +45,20 @@ export default function MyApp({ Component, pageProps, router }) {
   );
 
   return (
-    <AuthProvider>
-      <CartProvider>
-        <WishlistProvider>
-          <CssBaseline />
-          <style dangerouslySetInnerHTML={{ __html: ".product-card-thumb-scroll::-webkit-scrollbar,.product-slider-thumb-scroll::-webkit-scrollbar{display:none}" }} />
-      {isShopPage && <ShopLayout>{page}</ShopLayout>}
-      {isDiscussionPage && <DiscussionLayout>{page}</DiscussionLayout>}
-      {isGamePage && <GameLayout>{page}</GameLayout>}
-      {isIntroPage && <IntroLayout>{page}</IntroLayout>}
-      {!isShopPage && !isDiscussionPage && !isGamePage && !isIntroPage && page}
-        </WishlistProvider>
-      </CartProvider>
-    </AuthProvider>
+    <ThemeProvider theme={theme}>
+      <AuthProvider>
+        <CartProvider>
+          <WishlistProvider>
+            <CssBaseline />
+            <style dangerouslySetInnerHTML={{ __html: ".product-card-thumb-scroll::-webkit-scrollbar,.product-slider-thumb-scroll::-webkit-scrollbar{display:none}" }} />
+            {isShopPage && <ShopLayout>{page}</ShopLayout>}
+            {isDiscussionPage && <DiscussionLayout>{page}</DiscussionLayout>}
+            {isGamePage && <GameLayout>{page}</GameLayout>}
+            {isIntroPage && <IntroLayout>{page}</IntroLayout>}
+            {!isShopPage && !isDiscussionPage && !isGamePage && !isIntroPage && page}
+          </WishlistProvider>
+        </CartProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }

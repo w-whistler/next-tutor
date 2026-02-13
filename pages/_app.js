@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import DiscussionLayout from "../components/layouts/DiscussionLayout";
 import GameLayout from "../components/layouts/GameLayout";
 import IntroLayout from "../components/layouts/IntroLayout";
@@ -8,12 +9,38 @@ import { WishlistProvider } from "../context/WishlistContext";
 import { CssBaseline } from "@material-ui/core";
 
 export default function MyApp({ Component, pageProps, router }) {
-  const isShopPage = router.pathname.startsWith("/shop");
-  const isDiscussionPage = router.pathname.startsWith("/discussion");
-  const isGamePage = router.pathname.startsWith("/game");
-  const isIntroPage = router.pathname.startsWith("/intro");
+  const pathname = router.pathname;
+  const isShopPage = useMemo(
+    function () {
+      return pathname.startsWith("/shop");
+    },
+    [pathname]
+  );
+  const isDiscussionPage = useMemo(
+    function () {
+      return pathname.startsWith("/discussion");
+    },
+    [pathname]
+  );
+  const isGamePage = useMemo(
+    function () {
+      return pathname.startsWith("/game");
+    },
+    [pathname]
+  );
+  const isIntroPage = useMemo(
+    function () {
+      return pathname.startsWith("/intro");
+    },
+    [pathname]
+  );
 
-  const page = <Component {...pageProps} />;
+  const page = useMemo(
+    function () {
+      return <Component {...pageProps} />;
+    },
+    [Component, pageProps]
+  );
 
   return (
     <AuthProvider>

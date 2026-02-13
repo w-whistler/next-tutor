@@ -1,10 +1,11 @@
 import { Box } from "@material-ui/core";
 import Head from "next/head";
+import { memo } from "react";
 import SharedFooter from "../SharedFooter";
 import SharedTopBar from "./SharedTopBar";
 import ShopSecondaryBar from "../shop/ShopSecondaryBar";
 
-export default function ShopLayout({ children }) {
+function ShopLayout({ children }) {
   return (
     <>
       <Head>
@@ -20,3 +21,5 @@ export default function ShopLayout({ children }) {
     </>
   );
 }
+
+export default memo(ShopLayout);

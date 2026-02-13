@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useRef } from "react";
+import { createContext, useState, useEffect, useRef, useMemo, useCallback } from "react";
 
 const STORAGE_KEY = "store_cart";
 
@@ -29,12 +29,21 @@ export function CartProvider(props) {
     } catch (e) {}
   }, [cart]);
 
-  function addToCart(product) {
-    setCart([].concat(cart, [product]));
-  }
+  const addToCart = useCallback(function (product) {
+    setCart(function (prev) {
+      return [].concat(prev, [product]);
+    });
+  }, []);
+
+  const value = useMemo(
+    function () {
+      return { cart, addToCart, setCart };
+    },
+    [cart, addToCart, setCart]
+  );
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, setCart }}>
+    <CartContext.Provider value={value}>
       {children}
     </CartContext.Provider>
   );

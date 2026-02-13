@@ -1,7 +1,8 @@
 import { Box, Paper, Typography } from "@material-ui/core";
+import { memo } from "react";
 import { importantNotices } from "../../data/shopData";
 
-export default function NoticesPanel() {
+function NoticesPanel() {
   return (
     <Paper style={{ height: "100%", overflow: "auto" }}>
       <Box p={1}>
@@ -24,3 +25,5 @@ export default function NoticesPanel() {
     </Paper>
   );
 }
+
+export default memo(NoticesPanel);

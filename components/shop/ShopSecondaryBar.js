@@ -14,7 +14,7 @@ import {
   Switch,
 } from "@material-ui/core";
 import { Search as SearchIcon, ShoppingCartOutlined } from "@material-ui/icons";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, memo } from "react";
 import { CartContext } from "../../context/CartContext";
 import { categories } from "../../data/shopData";
 
@@ -25,7 +25,7 @@ const SORT_OPTIONS = [
   { value: "price_desc", label: "Price: High to Low" },
 ];
 
-export default function ShopSecondaryBar() {
+function ShopSecondaryBar() {
   const router = useRouter();
   const { cart } = useContext(CartContext);
   const { q = "", sort = "", category = "", onsale = "" } = router.query;
@@ -160,3 +160,5 @@ export default function ShopSecondaryBar() {
     </Paper>
   );
 }
+
+export default memo(ShopSecondaryBar);

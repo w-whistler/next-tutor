@@ -11,10 +11,10 @@ import {
   Typography,
 } from "@material-ui/core";
 import { AccountCircle } from "@material-ui/icons";
-import { useContext, useState } from "react";
+import { useContext, useState, memo } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
-export default function SharedTopBar() {
+function SharedTopBar() {
   const router = useRouter();
   const { user, login, logout } = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -109,3 +109,5 @@ export default function SharedTopBar() {
     </AppBar>
   );
 }
+
+export default memo(SharedTopBar);

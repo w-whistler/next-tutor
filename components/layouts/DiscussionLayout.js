@@ -1,9 +1,10 @@
 import { Box, Container } from "@material-ui/core";
 import Head from "next/head";
+import { memo } from "react";
 import SharedFooter from "../SharedFooter";
 import SharedTopBar from "./SharedTopBar";
 
-export default function DiscussionLayout({ children }) {
+function DiscussionLayout({ children }) {
   return (
     <>
       <Head>
@@ -18,3 +19,5 @@ export default function DiscussionLayout({ children }) {
     </>
   );
 }
+
+export default memo(DiscussionLayout);

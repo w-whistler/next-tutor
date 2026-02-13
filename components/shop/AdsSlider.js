@@ -1,10 +1,10 @@
 import { Box, Paper, Typography } from "@material-ui/core";
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { adsSlides } from "../../data/shopData";
 
 const AUTO_ADVANCE_MS = 4000;
 
-export default function AdsSlider() {
+function AdsSlider() {
   const [index, setIndex] = useState(0);
 
   useEffect(function () {
@@ -105,3 +105,5 @@ export default function AdsSlider() {
     </Paper>
   );
 }
+
+export default memo(AdsSlider);

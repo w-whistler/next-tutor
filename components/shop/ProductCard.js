@@ -15,11 +15,11 @@ import {
   CompareArrows,
 } from "@material-ui/icons";
 import Link from "next/link";
-import { useState, useContext, useRef, useEffect } from "react";
+import { useState, useContext, useRef, useEffect, memo } from "react";
 import { CartContext } from "../../context/CartContext";
 import { WishlistContext } from "../../context/WishlistContext";
 
-export default function ProductCard({ product }) {
+function ProductCard({ product }) {
   const [imageIndex, setImageIndex] = useState(0);
   const [showThumbArrows, setShowThumbArrows] = useState(false);
   const thumbScrollRef = useRef(null);
@@ -296,3 +296,5 @@ export default function ProductCard({ product }) {
     </Card>
   );
 }
+
+export default memo(ProductCard);

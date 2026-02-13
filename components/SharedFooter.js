@@ -6,6 +6,7 @@ import {
   Link as MuiLink,
   Typography,
 } from "@material-ui/core";
+import { memo } from "react";
 import Link from "next/link";
 
 const footerLinks = [
@@ -15,7 +16,7 @@ const footerLinks = [
   { label: "Discussions", href: "/discussion" },
 ];
 
-export default function SharedFooter() {
+function SharedFooter() {
   return (
     <Box component="footer" mt={4} py={3} bgcolor="grey.200">
         <Container maxWidth="lg">
@@ -55,3 +56,5 @@ export default function SharedFooter() {
     </Box>
   );
 }
+
+export default memo(SharedFooter);

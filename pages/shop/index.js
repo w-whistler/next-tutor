@@ -1,19 +1,35 @@
 import { Box, Container, Grid } from "@material-ui/core";
+import { useMemo } from "react";
 import CategoryDrawer from "../../components/shop/CategoryDrawer";
 import AdsSlider from "../../components/shop/AdsSlider";
 import NoticesPanel from "../../components/shop/NoticesPanel";
 import ProductSection from "../../components/shop/ProductSection";
+import { getProductsByIdsCached } from "../../lib/shopDataCache";
 import {
-  getProductsByIds,
   recommendedProductIds,
   mostVisitedProductIds,
   trendingProductIds,
 } from "../../data/shopData";
 
 export default function ShopHomePage() {
-  const recommended = getProductsByIds(recommendedProductIds);
-  const mostVisited = getProductsByIds(mostVisitedProductIds);
-  const trending = getProductsByIds(trendingProductIds);
+  const recommended = useMemo(
+    function () {
+      return getProductsByIdsCached(recommendedProductIds);
+    },
+    []
+  );
+  const mostVisited = useMemo(
+    function () {
+      return getProductsByIdsCached(mostVisitedProductIds);
+    },
+    []
+  );
+  const trending = useMemo(
+    function () {
+      return getProductsByIdsCached(trendingProductIds);
+    },
+    []
+  );
 
   return (
     <Container maxWidth="lg" style={{ paddingTop: 24, paddingBottom: 24 }}>

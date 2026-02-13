@@ -8,9 +8,9 @@ import {
   Divider,
 } from "@material-ui/core";
 import { AddShoppingCart } from "@material-ui/icons";
-import { useContext } from "react";
+import { useContext, useMemo, useCallback } from "react";
 import Head from "next/head";
-import { getProductById } from "../../data/shopData";
+import { getProductByIdCached } from "../../lib/shopDataCache";
 import ProductImageSlider from "../../components/shop/ProductImageSlider";
 import { CartContext } from "../../context/CartContext";
 
@@ -18,7 +18,12 @@ export default function ProductPage() {
   const router = useRouter();
   const { id } = router.query;
   const { addToCart } = useContext(CartContext);
-  const product = id ? getProductById(id) : null;
+  const product = useMemo(
+    function () {
+      return id ? getProductByIdCached(id) : null;
+    },
+    [id]
+  );
 
   if (!product && router.isReady) {
     return (
@@ -32,15 +37,18 @@ export default function ProductPage() {
 
   const hasDiscount = product.discountRate > 0;
 
-  const handleAddToCart = () => {
-    addToCart({
-      id: product.id,
-      title: product.title,
-      price: product.price,
-      sku: product.sku,
-      quantity: 1,
-    });
-  };
+  const handleAddToCart = useCallback(
+    function () {
+      addToCart({
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        sku: product.sku,
+        quantity: 1,
+      });
+    },
+    [product, addToCart]
+  );
 
   return (
     <>

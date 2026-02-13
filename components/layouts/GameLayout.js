@@ -1,9 +1,10 @@
 import { Box, Container, Typography } from "@material-ui/core";
 import Head from "next/head";
+import { memo } from "react";
 import SharedFooter from "../SharedFooter";
 import SharedTopBar from "./SharedTopBar";
 
-export default function GameLayout({ children }) {
+function GameLayout({ children }) {
   return (
     <>
       <Head>
@@ -18,3 +19,5 @@ export default function GameLayout({ children }) {
     </>
   );
 }
+
+export default memo(GameLayout);

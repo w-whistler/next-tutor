@@ -8,11 +8,11 @@ import {
   Typography,
 } from "@material-ui/core";
 import { ChevronRight } from "@material-ui/icons";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, memo } from "react";
 import Link from "next/link";
 import { categories } from "../../data/shopData";
 
-export default function CategoryDrawer() {
+function CategoryDrawer() {
   const [selectedId, setSelectedId] = useState(null);
   const [level2PopperAnchor, setLevel2PopperAnchor] = useState(null);
   const [level2PopperChildren, setLevel2PopperChildren] = useState(null);
@@ -232,3 +232,5 @@ export default function CategoryDrawer() {
     </Paper>
   );
 }
+
+export default memo(CategoryDrawer);

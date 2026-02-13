@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useRef } from "react";
+import { createContext, useState, useEffect, useRef, useMemo, useCallback } from "react";
 
 const STORAGE_KEY = "store_wishlist";
 
@@ -29,20 +29,30 @@ export function WishlistProvider(props) {
     } catch (e) {}
   }, [likedIds]);
 
-  function isLiked(productId) {
-    return likedIds.indexOf(productId) >= 0;
-  }
+  const isLiked = useCallback(
+    function (productId) {
+      return likedIds.indexOf(productId) >= 0;
+    },
+    [likedIds]
+  );
 
-  function toggleLike(productId) {
+  const toggleLike = useCallback(function (productId) {
     setLikedIds(function (prev) {
       const i = prev.indexOf(productId);
       if (i >= 0) return prev.slice(0, i).concat(prev.slice(i + 1));
       return prev.concat([productId]);
     });
-  }
+  }, []);
+
+  const value = useMemo(
+    function () {
+      return { likedIds, isLiked, toggleLike };
+    },
+    [likedIds, isLiked, toggleLike]
+  );
 
   return (
-    <WishlistContext.Provider value={{ likedIds, isLiked, toggleLike }}>
+    <WishlistContext.Provider value={value}>
       {children}
     </WishlistContext.Provider>
   );

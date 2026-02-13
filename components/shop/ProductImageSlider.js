@@ -1,8 +1,8 @@
 import { Box, IconButton } from "@material-ui/core";
 import { ChevronLeft, ChevronRight } from "@material-ui/icons";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, memo } from "react";
 
-export default function ProductImageSlider(props) {
+function ProductImageSlider(props) {
   const images = props.images && props.images.length > 0 ? props.images : [];
   const list = images.length ? images : ["https://picsum.photos/seed/placeholder/400/400"];
   const [index, setIndex] = useState(0);
@@ -207,3 +207,5 @@ export default function ProductImageSlider(props) {
     </Box>
   );
 }
+
+export default memo(ProductImageSlider);

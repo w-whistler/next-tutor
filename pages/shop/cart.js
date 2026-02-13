@@ -66,9 +66,11 @@ export default function CartPage() {
               <Typography variant="h6">Total: ${total.toFixed(2)}</Typography>
             </Box>
             <Box mt={2}>
-              <Button variant="contained" color="primary" disabled>
-                Proceed to checkout (placeholder)
-              </Button>
+              <Link href="/shop/checkout" passHref>
+                <Button variant="contained" color="primary" component="a">
+                  Proceed to checkout
+                </Button>
+              </Link>
             </Box>
           </>
         )}

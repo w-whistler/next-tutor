@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useRef } from "react";
+import { createContext, useState, useEffect, useRef, useMemo, useCallback } from "react";
 
 const STORAGE_KEY = "store_user";
 
@@ -30,16 +30,23 @@ export function AuthProvider(props) {
     } catch (e) {}
   }, [user]);
 
-  function login(credentials) {
+  const login = useCallback(function (credentials) {
     setUser({ email: credentials.email || "user@example.com", name: credentials.name || "User" });
-  }
+  }, []);
 
-  function logout() {
+  const logout = useCallback(function () {
     setUser(null);
-  }
+  }, []);
+
+  const value = useMemo(
+    function () {
+      return { user, login, logout };
+    },
+    [user, login, logout]
+  );
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );

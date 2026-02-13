@@ -3,7 +3,8 @@ import { Container, Typography } from "@material-ui/core";
 import { useMemo } from "react";
 import Head from "next/head";
 import ProductSection from "../../components/shop/ProductSection";
-import { allProducts, categories } from "../../data/shopData";
+import { getProductsByCategoryIdCached } from "../../lib/shopDataCache";
+import { categories } from "../../data/shopData";
 
 function findCategoryPath(id, nodes, path) {
   if (!id || !nodes) return null;
@@ -41,9 +42,7 @@ export default function CategoryPage() {
     function () {
       if (!id || typeof id !== "string") return [];
       const level1Id = getLevel1Id(id);
-      return allProducts.filter(function (p) {
-        return p.categoryId === level1Id;
-      });
+      return getProductsByCategoryIdCached(level1Id);
     },
     [id]
   );

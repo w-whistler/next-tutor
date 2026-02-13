@@ -19,8 +19,13 @@ import { CartContext } from "../../context/CartContext";
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { cart } = useContext(CartContext);
+  const { cart, setCart } = useContext(CartContext);
   const total = cart.reduce((sum, item) => sum + (item.price || 0) * (item.quantity || 1), 0);
+
+  function handlePlaceOrder() {
+    setCart([]);
+    router.push("/shop/checkout/confirmation?total=" + encodeURIComponent(total.toFixed(2)));
+  }
 
   if (cart.length === 0) {
     return (
@@ -101,13 +106,7 @@ export default function CheckoutPage() {
           <Link href="/shop/cart" passHref>
             <Button>Back to cart</Button>
           </Link>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={function () {
-              router.push("/shop/checkout/confirmation");
-            }}
-          >
+          <Button variant="contained" color="primary" onClick={handlePlaceOrder}>
             Place order
           </Button>
         </Box>

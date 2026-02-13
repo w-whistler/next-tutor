@@ -54,7 +54,7 @@ export default function ProductPage() {
     <>
       <Head>
         <title>{product.title} | eCommerce</title>
-        <link rel="icon" href="/static/favicon.ico" />
+        <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
       </Head>
       <Container maxWidth="lg" style={{ paddingTop: 24, paddingBottom: 24 }}>
         <Box

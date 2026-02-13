@@ -10,7 +10,7 @@ function ShopLayout({ children }) {
     <>
       <Head>
         <title>eCommerce | Store</title>
-        <link rel="icon" href="/static/favicon.ico" />
+        <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
       </Head>
       <SharedTopBar />
       <ShopSecondaryBar />

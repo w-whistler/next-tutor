@@ -12,7 +12,7 @@ export default function OrderConfirmationPage() {
     <>
       <Head>
         <title>Order confirmed | eCommerce</title>
-        <link rel="icon" href="/static/favicon.ico" />
+        <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
       </Head>
       <Container maxWidth="sm" style={{ paddingTop: 48, paddingBottom: 48 }}>
         <Paper style={{ padding: 32, textAlign: "center" }}>

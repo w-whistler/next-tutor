@@ -24,7 +24,7 @@ export default function LandingPage() {
     <>
       <Head>
         <title>Store — Welcome</title>
-        <link rel="icon" href="/static/favicon.ico" />
+        <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
       </Head>
       <SharedTopBar />
       <Container maxWidth="md">

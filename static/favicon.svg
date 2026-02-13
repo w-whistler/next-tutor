@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E6C547"/>
+      <stop offset="100%" stop-color="#9A7B00"/>
+    </linearGradient>
+  </defs>
+  <!-- Wheat stalk -->
+  <path fill="url(#g)" d="M16 2v28c0 .55.45 1 1 1s1-.45 1-1V2h-2z"/>
+  <!-- Grain heads (three ovals) -->
+  <ellipse cx="16" cy="6" rx="4" ry="5" fill="#C9A227"/>
+  <ellipse cx="11" cy="10" rx="3" ry="4" fill="#9A7B00"/>
+  <ellipse cx="21" cy="10" rx="3" ry="4" fill="#9A7B00"/>
+</svg>

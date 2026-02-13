@@ -8,7 +8,7 @@ export default function RegisterPage() {
     <>
       <Head>
         <title>Register | Store</title>
-        <link rel="icon" href="/static/favicon.ico" />
+        <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
       </Head>
       <SharedTopBar />
       <Container maxWidth="sm">

@@ -8,7 +8,7 @@ export default function LoginPage() {
     <>
       <Head>
         <title>Login | Store</title>
-        <link rel="icon" href="/static/favicon.ico" />
+        <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
       </Head>
       <SharedTopBar />
       <Container maxWidth="sm">

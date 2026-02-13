@@ -9,7 +9,7 @@ function DiscussionLayout({ children }) {
     <>
       <Head>
         <title>Discussions | Store</title>
-        <link rel="icon" href="/static/favicon.ico" />
+        <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
       </Head>
       <SharedTopBar />
       <Box component="main" minHeight="60vh" p={2} pb={4}>

@@ -22,7 +22,7 @@ export default function CartPage() {
     <>
       <Head>
         <title>Cart | eCommerce</title>
-        <link rel="icon" href="/static/favicon.ico" />
+        <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
       </Head>
       <Container maxWidth="md" style={{ paddingTop: 24, paddingBottom: 24 }}>
         <Typography variant="h5" gutterBottom>

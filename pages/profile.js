@@ -12,7 +12,7 @@ export default function ProfilePage() {
     <>
       <Head>
         <title>Profile | Store</title>
-        <link rel="icon" href="/static/favicon.ico" />
+        <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
       </Head>
       <SharedTopBar />
       <Container maxWidth="sm">

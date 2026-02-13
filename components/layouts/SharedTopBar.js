@@ -11,14 +11,50 @@ import {
   Typography,
 } from "@material-ui/core";
 import { AccountCircle } from "@material-ui/icons";
-import { useContext, useState, memo } from "react";
+import { useContext, useState, useEffect, memo } from "react";
 import { AuthContext } from "../../context/AuthContext";
+
+const SCROLL_THRESHOLD_DOWN = 28;
+const SCROLL_THRESHOLD_UP = 12;
+const TOPBAR_HEIGHT_DEFAULT = 64;
+const TOPBAR_HEIGHT_SMALL = 48;
 
 function SharedTopBar() {
   const router = useRouter();
   const { user, login, logout } = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [scrolled, setScrolled] = useState(false);
   const open = Boolean(anchorEl);
+
+  useEffect(
+    function () {
+      if (typeof window === "undefined") return;
+      let rafId = null;
+      let lastScrollY = window.scrollY;
+      function onScroll() {
+        if (rafId !== null) return;
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          const y = window.scrollY;
+          if (y !== lastScrollY) {
+            lastScrollY = y;
+            setScrolled(function (prev) {
+              if (y > SCROLL_THRESHOLD_DOWN) return true;
+              if (y < SCROLL_THRESHOLD_UP) return false;
+              return prev;
+            });
+          }
+        });
+      }
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+      return function () {
+        window.removeEventListener("scroll", onScroll);
+        if (rafId !== null) cancelAnimationFrame(rafId);
+      };
+    },
+    []
+  );
 
   function handleMenuOpen(event) {
     setAnchorEl(event.currentTarget);
@@ -38,22 +74,51 @@ function SharedTopBar() {
     logout();
   }
 
+  const barHeight = scrolled ? TOPBAR_HEIGHT_SMALL : TOPBAR_HEIGHT_DEFAULT;
+  const logoHeight = scrolled ? 28 : 36;
+
   return (
-    <AppBar position="static">
-      <Toolbar>
+    <AppBar
+      position="sticky"
+      style={{
+        top: 0,
+        zIndex: 1100,
+        minHeight: barHeight,
+        height: barHeight,
+        transition: "height 0.2s ease, min-height 0.2s ease",
+      }}
+    >
+      <Toolbar
+        style={{
+          minHeight: barHeight,
+          height: barHeight,
+          paddingTop: 0,
+          paddingBottom: 0,
+          transition: "height 0.2s ease, min-height 0.2s ease",
+        }}
+      >
         <Link href="/" passHref>
           <Box
             component="a"
             display="flex"
             alignItems="center"
-            style={{ textDecoration: "none", color: "inherit", height: 40 }}
+            style={{ textDecoration: "none", color: "inherit", height: logoHeight }}
           >
             <img
               src="/static/logo.svg"
               alt=""
-              style={{ height: 36, display: "block" }}
+              style={{
+                height: logoHeight,
+                display: "block",
+                width: "auto",
+                transition: "height 0.2s ease",
+              }}
             />
-            <Typography variant="h6" component="span" style={{ marginLeft: 12 }}>
+            <Typography
+              variant={scrolled ? "subtitle1" : "h6"}
+              component="span"
+              style={{ marginLeft: 10 }}
+            >
               G-Store
             </Typography>
           </Box>

@@ -25,6 +25,11 @@ const SORT_OPTIONS = [
   { value: "price_desc", label: "Price: High to Low" },
 ];
 
+const SCROLL_THRESHOLD_DOWN = 28;
+const SCROLL_THRESHOLD_UP = 12;
+const TOPBAR_HEIGHT_DEFAULT = 64;
+const TOPBAR_HEIGHT_SMALL = 48;
+
 function ShopSecondaryBar() {
   const router = useRouter();
   const { cart } = useContext(CartContext);
@@ -33,6 +38,37 @@ function ShopSecondaryBar() {
   const [sortBy, setSortBy] = useState(sort);
   const [filterCategory, setFilterCategory] = useState(category);
   const [onSaleOnly, setOnSaleOnly] = useState(onsale === "1");
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(
+    function () {
+      if (typeof window === "undefined") return;
+      let rafId = null;
+      let lastScrollY = window.scrollY;
+      function onScroll() {
+        if (rafId !== null) return;
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          const y = window.scrollY;
+          if (y !== lastScrollY) {
+            lastScrollY = y;
+            setScrolled(function (prev) {
+              if (y > SCROLL_THRESHOLD_DOWN) return true;
+              if (y < SCROLL_THRESHOLD_UP) return false;
+              return prev;
+            });
+          }
+        });
+      }
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+      return function () {
+        window.removeEventListener("scroll", onScroll);
+        if (rafId !== null) cancelAnimationFrame(rafId);
+      };
+    },
+    []
+  );
 
   useEffect(() => {
     setSearchQuery(typeof q === "string" ? q : "");
@@ -78,9 +114,27 @@ function ShopSecondaryBar() {
     applySearch({ onsale: v });
   };
 
+  const topOffset = scrolled ? TOPBAR_HEIGHT_SMALL : TOPBAR_HEIGHT_DEFAULT;
+
   return (
-    <Paper elevation={1} square>
-      <Box px={2} py={1.5} display="flex" flexWrap="wrap" alignItems="center">
+    <Paper
+      elevation={1}
+      square
+      style={{
+        position: "sticky",
+        top: topOffset,
+        zIndex: 1099,
+        transition: "top 0.2s ease",
+      }}
+    >
+      <Box
+        px={2}
+        py={scrolled ? 0.75 : 1.5}
+        display="flex"
+        flexWrap="wrap"
+        alignItems="center"
+        style={{ transition: "padding 0.2s ease" }}
+      >
         <form onSubmit={handleSearchSubmit} style={{ display: "flex", alignItems: "center", flex: "1 1 200px", minWidth: 200, marginRight: 16 }}>
           <Box
             display="flex"

@@ -8,22 +8,17 @@ import {
   Divider,
 } from "@material-ui/core";
 import { AddShoppingCart } from "@material-ui/icons";
-import { useContext, useMemo, useCallback } from "react";
+import { useContext, useCallback } from "react";
 import Head from "next/head";
-import { getProductByIdCached } from "../../lib/shopDataCache";
 import ProductImageSlider from "../../components/shop/ProductImageSlider";
 import { CartContext } from "../../context/CartContext";
+import { getProductById } from "../../lib/shopApi";
 
-export default function ProductPage() {
+export default function ProductPage({ product: initialProduct }) {
   const router = useRouter();
   const { id } = router.query;
   const { addToCart } = useContext(CartContext);
-  const product = useMemo(
-    function () {
-      return id ? getProductByIdCached(id) : null;
-    },
-    [id]
-  );
+  const product = initialProduct != null ? initialProduct : null;
 
   if (!product && router.isReady) {
     return (
@@ -105,4 +100,17 @@ export default function ProductPage() {
       </Container>
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+  const id = context.query.id;
+  if (!id || typeof id !== "string") {
+    return { props: { product: null } };
+  }
+  try {
+    const product = await getProductById(id);
+    return { props: { product } };
+  } catch (e) {
+    return { props: { product: null } };
+  }
 }

@@ -16,7 +16,7 @@ import {
 import { Search as SearchIcon, ShoppingCartOutlined } from "@material-ui/icons";
 import { useState, useEffect, useContext, memo } from "react";
 import { CartContext } from "../../context/CartContext";
-import { categories } from "../../data/shopData";
+import { getCategories } from "../../lib/shopApi";
 
 const SORT_OPTIONS = [
   { value: "", label: "Sort by" },
@@ -39,6 +39,21 @@ function ShopSecondaryBar() {
   const [filterCategory, setFilterCategory] = useState(category);
   const [onSaleOnly, setOnSaleOnly] = useState(onsale === "1");
   const [scrolled, setScrolled] = useState(false);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(function () {
+    let cancelled = false;
+    getCategories()
+      .then(function (data) {
+        if (!cancelled) setCategories(data);
+      })
+      .catch(function () {
+        if (!cancelled) setCategories([]);
+      });
+    return function () {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(
     function () {

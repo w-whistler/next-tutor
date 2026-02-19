@@ -1,8 +1,24 @@
 import { Box, Paper, Typography } from "@material-ui/core";
-import { memo } from "react";
-import { importantNotices } from "../../data/shopData";
+import { useState, useEffect, memo } from "react";
+import { getNotices } from "../../lib/shopApi";
 
 function NoticesPanel() {
+  const [importantNotices, setImportantNotices] = useState([]);
+
+  useEffect(function () {
+    let cancelled = false;
+    getNotices()
+      .then(function (data) {
+        if (!cancelled) setImportantNotices(Array.isArray(data) ? data : []);
+      })
+      .catch(function () {
+        if (!cancelled) setImportantNotices([]);
+      });
+    return function () {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <Paper style={{ height: "100%", overflow: "auto" }}>
       <Box p={1}>

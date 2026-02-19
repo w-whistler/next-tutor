@@ -1,35 +1,11 @@
 import { Box, Container, Grid } from "@material-ui/core";
-import { useMemo } from "react";
 import CategoryDrawer from "../../components/shop/CategoryDrawer";
 import AdsSlider from "../../components/shop/AdsSlider";
 import NoticesPanel from "../../components/shop/NoticesPanel";
 import ProductSection from "../../components/shop/ProductSection";
-import { getProductsByIdsCached } from "../../lib/shopDataCache";
-import {
-  recommendedProductIds,
-  mostVisitedProductIds,
-  trendingProductIds,
-} from "../../data/shopData";
+import { getHomeSections } from "../../lib/shopApi";
 
-export default function ShopHomePage() {
-  const recommended = useMemo(
-    function () {
-      return getProductsByIdsCached(recommendedProductIds);
-    },
-    []
-  );
-  const mostVisited = useMemo(
-    function () {
-      return getProductsByIdsCached(mostVisitedProductIds);
-    },
-    []
-  );
-  const trending = useMemo(
-    function () {
-      return getProductsByIdsCached(trendingProductIds);
-    },
-    []
-  );
+export default function ShopHomePage({ recommended = [], mostVisited = [], trending = [] }) {
 
   return (
     <Container maxWidth="lg" style={{ paddingTop: 24, paddingBottom: 24 }}>
@@ -58,4 +34,21 @@ export default function ShopHomePage() {
       <ProductSection title="Trending" products={trending} />
     </Container>
   );
+}
+
+export async function getServerSideProps() {
+  try {
+    const data = await getHomeSections();
+    return {
+      props: {
+        recommended: data.recommended || [],
+        mostVisited: data.mostVisited || [],
+        trending: data.trending || [],
+      },
+    };
+  } catch (e) {
+    return {
+      props: { recommended: [], mostVisited: [], trending: [] },
+    };
+  }
 }

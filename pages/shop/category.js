@@ -1,10 +1,8 @@
 import { useRouter } from "next/router";
 import { Container, Typography } from "@material-ui/core";
-import { useMemo } from "react";
 import Head from "next/head";
 import ProductSection from "../../components/shop/ProductSection";
-import { getProductsByCategoryIdCached } from "../../lib/shopDataCache";
-import { categories } from "../../data/shopData";
+import { getCategories, getProductsByCategoryId } from "../../lib/shopApi";
 
 function findCategoryPath(id, nodes, path) {
   if (!id || !nodes) return null;
@@ -20,7 +18,7 @@ function findCategoryPath(id, nodes, path) {
   return null;
 }
 
-function getLevel1Id(id) {
+function getLevel1Id(id, categories) {
   for (let i = 0; i < categories.length; i++) {
     if (categories[i].id === id) return id;
     const level2 = categories[i].children || [];
@@ -35,26 +33,9 @@ function getLevel1Id(id) {
   return id;
 }
 
-export default function CategoryPage() {
+export default function CategoryPage({ products = [], categoryLabel = "" }) {
   const router = useRouter();
   const { id } = router.query;
-  const products = useMemo(
-    function () {
-      if (!id || typeof id !== "string") return [];
-      const level1Id = getLevel1Id(id);
-      return getProductsByCategoryIdCached(level1Id);
-    },
-    [id]
-  );
-
-  const categoryLabel = useMemo(
-    function () {
-      if (!id) return "";
-      const path = findCategoryPath(id, categories, []);
-      return path ? path.join(" › ") : id;
-    },
-    [id]
-  );
 
   return (
     <>
@@ -76,4 +57,26 @@ export default function CategoryPage() {
       </Container>
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+  const id = context.query.id;
+  if (!id || typeof id !== "string") {
+    return { props: { products: [], categoryLabel: "" } };
+  }
+  try {
+    const categories = await getCategories();
+    const level1Id = getLevel1Id(id, categories);
+    const products = await getProductsByCategoryId(level1Id);
+    const path = findCategoryPath(id, categories, []);
+    const categoryLabel = path ? path.join(" › ") : id;
+    return {
+      props: {
+        products,
+        categoryLabel,
+      },
+    };
+  } catch (e) {
+    return { props: { products: [], categoryLabel: id || "" } };
+  }
 }

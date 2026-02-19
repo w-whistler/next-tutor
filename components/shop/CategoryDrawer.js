@@ -10,9 +10,10 @@ import {
 import { ChevronRight } from "@material-ui/icons";
 import { useState, useRef, useEffect, memo } from "react";
 import Link from "next/link";
-import { categories } from "../../data/shopData";
+import { getCategories } from "../../lib/shopApi";
 
 function CategoryDrawer() {
+  const [categories, setCategories] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
   const [level2PopperAnchor, setLevel2PopperAnchor] = useState(null);
   const [level2PopperChildren, setLevel2PopperChildren] = useState(null);
@@ -20,6 +21,21 @@ function CategoryDrawer() {
   const containerRef = useRef(null);
   const firstPopperPaperRef = useRef(null);
   const secondPopperPaperRef = useRef(null);
+
+  useEffect(function () {
+    let cancelled = false;
+    getCategories()
+      .then(function (data) {
+        if (!cancelled) setCategories(data);
+      })
+      .catch(function () {
+        if (!cancelled) setCategories([]);
+      });
+    return function () {
+      cancelled = true;
+    };
+  }, []);
+
   const selected = categories.find(function (c) {
     return c.id === selectedId;
   });

@@ -1,20 +1,12 @@
 import { useRouter } from "next/router";
 import { Container, Typography } from "@material-ui/core";
-import { useMemo } from "react";
 import Head from "next/head";
 import ProductSection from "../../components/shop/ProductSection";
-import { filterAndSortProductsCached } from "../../lib/shopDataCache";
+import { getProductsFiltered } from "../../lib/shopApi";
 
-export default function SearchPage() {
+export default function SearchPage({ results = [] }) {
   const router = useRouter();
   const { q, sort, category, onsale } = router.query;
-  const results = useMemo(
-    function () {
-      return filterAndSortProductsCached({ q, sort, category, onsale });
-    },
-    [q, sort, category, onsale]
-  );
-
   const hasFilters = q || sort || category || onsale;
 
   return (
@@ -42,4 +34,14 @@ export default function SearchPage() {
       </Container>
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+  const { q, sort, category, onsale } = context.query;
+  try {
+    const results = await getProductsFiltered({ q, sort, category, onsale: onsale === "1" });
+    return { props: { results: Array.isArray(results) ? results : [] } };
+  } catch (e) {
+    return { props: { results: [] } };
+  }
 }

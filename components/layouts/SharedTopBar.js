@@ -21,7 +21,7 @@ const TOPBAR_HEIGHT_SMALL = 48;
 
 function SharedTopBar() {
   const router = useRouter();
-  const { user, login, logout } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const [scrolled, setScrolled] = useState(false);
   const open = Boolean(anchorEl);
@@ -66,7 +66,7 @@ function SharedTopBar() {
 
   function handleLogin() {
     handleMenuClose();
-    login({ email: "user@example.com", name: "User" });
+    router.push("/login");
   }
 
   function handleLogout() {
